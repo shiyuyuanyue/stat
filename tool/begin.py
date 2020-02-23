@@ -1,0 +1,2 @@
+data = {}
+print(bool([data]))

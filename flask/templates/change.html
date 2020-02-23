@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户修改</title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css"/>
+</head>
+<body>
+<div id="user_info"><img style="margin:220px 250px;" src="/static/img/load.gif"></div>
+<div id="common_footer">© 2019-2020 stat.cc.All rights reserved &nbsp;&nbsp;<a href="/lab">实验室</a></div>
+<script>
+    token = window.localStorage.getItem('st_token')
+    username = window.localStorage.getItem('st_user')
+    var url = window.location.href
+    var url1 = url.split('//')[1]
+    var url2 = url1.split('/')
+    var url_username = url2[2]
+
+    $.ajax({
+        type:"get",
+        dataType:'json',
+        url:'http://123.57.74.30/v1/users/' + url_username,
+        beforeSend: function(request) {
+           request.setRequestHeader("Authorization", token)
+       },
+        success:function (data) {
+            if(data.code == 400){
+                $(document).attr("title","用户修改_"+url_username+"的个人中心_STAT")
+                var html = ''
+                html += '<form action="" method="post" enctype="multipart/form-data">'
+                if (data.data.avatar){
+                    var avatar_user = 'http://123.57.74.30/media/' + data.data.avatar
+                    html += '<div id="avatar1"><img  height="128" width="128" src="' + avatar_user + '" alt="'+ data.username +'"></div>'
+                }else{
+                    data.data.gender == "男"?avatar_defult = 'http://123.57.74.30/media/m.png':
+                    data.data.gender == "女"?avatar_defult = 'http://123.57.74.30/media/w.png':
+                    avatar_defult = 'http://123.57.74.30/media/x.png'
+                    html += '<div id="avatar1"><img height="128" width="128" src="' + avatar_defult + '" alt="'+ data.username +'"></div>'
+                }
+                html += '<h1>' + username + '</h1>'
+                html += '<div id="file"><input type="file" name="avatar" id="avatar" >&nbsp;&nbsp;'
+                html += '<input onclick="upload_avatar()" type="button" id = "upload" value="保存头像" /></div>'
+                html += '</form>'
+                html += '<p>性别:&nbsp;<select id="gender"><option value ="男">男</option><option value ="女">女</option></select>'
+                html += '年龄:&nbsp;<select id="age"><option value ="10岁+">10岁+</option><option value ="20岁+">20岁+</option><option value="30岁+">30岁+</option><option value="40岁+">40岁+</option><option value ="50岁+">50岁+</option><option value="60岁+">60岁+</option><option value="70岁+">70岁+</option><option value="80岁+">80岁+</option></select>'
+                html += '收入:&nbsp;<select id="salary"><option value ="无业">无业</option><option value ="1000+">1000+</option><option value="2000+">2000+</option><option value="3000+">3000+</option><option value="4000+">4000+</option><option value ="5000+">5000+</option><option value="6000+">6000+</option><option value="7000+">7000+</option><option value="8000+">8000+</option><option value="9000+">9000+</option><option value="10000+">10000+</option><option value="15000+">15000+</option><option value="20000+">20000+</option><option value="30000+">30000+</option><option value="50000+">50000+</option></select>'
+                html += '经验:&nbsp;<select id="experience"><option value ="1年以下">1年以下</option><option value ="1年以上">1年以上</option><option value="2年以上">2年以上</option><option value="3年以上">3年以上</option><option value="4年以上">4年以上</option><option value ="5年以上">5年以上</option><option value="6年以上">6年以上</option><option value="7年以上">7年以上</option><option value="8年以上">8年以上</option><option value="9年以上">9年以上</option><option value="10年以上">10年以上</option></select>'
+                html += '杠杆:&nbsp;<select id="lever"><option value ="是">是</option><option value ="否">否</option></select></p>'
+                html += '<p>邮箱:&nbsp;<input type="text" placeholder="请输入email" value="' + data.data.email + '"></p>'
+                html += '<p>偏好:&nbsp;<label><input id="partiality" type="checkbox" value="短线" />短线</label><label><input id="partiality" type="checkbox" value="中线" />中线</label><label><input id="partiality" type="checkbox" value="长线" />长线</label></p>'
+                html += '<p>职业:&nbsp;<label><input id="Occupation" type="checkbox" value="机关党群" />机关党群</label><label><input id="Occupation" type="checkbox" value="企业负责人" />企业负责人</label><label><input id="Occupation" type="checkbox" value="事业单位负责人" />事业单位负责人</label><label><input id="Occupation" type="checkbox" value="专业技术人员" />专业技术人员</label><label><input id="Occupation" type="checkbox" value="办事人员" />办事人员</label><label><input id="Occupation" type="checkbox" value="商业人员" />商业人员</label><label><input id="Occupation" type="checkbox" value="服务业人员" />服务业人员</label><label><input id="Occupation" type="checkbox" value="农林牧渔水生产人员" />农林牧渔水生产人员</label><label><input id="Occupation" type="checkbox" value="制造运输业操作人员" />制造运输业操作人员</label><label><input id="Occupation" type="checkbox" value="军人" />军人</label><label><input id="Occupation" type="checkbox" value="无业或退休" />无业或退休</label></p>'
+
+                html += '<p><button id="put_data" onclick="put_data()">确认修改</button></p>'
+
+                $("#user_info").html(html)
+            }else{
+                alert(data.error)
+                }
+            }
+        }
+    )
+
+
+
+function upload_avatar(){
+        console.log('ok')
+        var token = window.localStorage.getItem('st_token')
+        var username = window.localStorage.getItem('st_user')
+        var url = 'http://123.57.74.30/v1/users/' + username + '/avatar'
+        formdata = new FormData()
+        formdata.append("avatar",$("#avatar")[0].files[0])
+        $.ajax({
+            processData: false,
+            contentType: false,
+            url:url,
+            type:'post',
+            data:formdata,
+            beforeSend:function(request){
+                request.setRequestHeader("Authorization",token)
+                },
+            success:function(data){
+                if(data.code == 500){
+                    console.log('ok')
+                    alert("成功")
+                    window.location =  '/home/' + data.username;
+                }else{
+                    alert(data.error)
+                    window.location = '/register'
+                }
+            }
+            }
+        )
+    }
+
+
+    function put_data(){
+            $('#put_data').html('正在提交')
+            var token = window.localStorage.getItem('st_token')
+            var username = window.localStorage.getItem('st_user')
+            var gender = $('#gender').val()
+            var age = $('#age').val()
+            var salary = $('#salary').val()
+            var Occupation = $('#Occupation').val()
+            var partiality = $('#partiality').val()
+            var experience = $('#experience').val()
+            var lever = $('#lever').val()
+            var post_data = {
+                'gender':gender,
+                'age':age,
+                'salary':salary,
+                'Occupation':Occupation,
+                'partiality':partiality,
+                'experience':experience,
+                'lever':lever,
+            }
+        $.ajax(
+            {
+                type:'put',
+                contentType:'application/json',
+                dataType:'json',
+                url:'http://123.57.74.30/v1/users/' + url_username,
+                data:JSON.stringify(post_data),
+                beforeSend:function(request){
+                    request.setRequestHeader("Authorization",token)
+                },
+                success:function(data){
+                    if(data.code == 500){
+                        alert('修改成功')
+                        window.location.href = '/home/'+ username
+                    }else{
+                        alert(data.error)
+                        window.location.href = '/login'
+                    }
+                }
+            }
+        )
+    }
+
+
+$(document).keyup(function(event){
+ if(event.keyCode ==13){
+  put_data()
+ }
+})
+
+
+</script>
+
+</body>
+</html>

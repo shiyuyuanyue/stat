@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/loading.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/code.css"/>
+</head>
+<body>
+<div id="common_header">
+    <div id="header_info">
+        <p><a href="/">STAT</a></p>
+        <input type="text" id="get_stock_code" placeholder="输入股票代码或名称">
+        <input type="button" id="search" value="搜索" onclick="search()">
+        <div id="guide_right"></div>
+        <div id="show"></div>
+    </div>
+</div>
+<div id="main">
+<div id="showdatas">
+    <div id="info">
+        <div id="loading">
+        </div>
+    </div>
+    <div id="para">
+        <span>详细说明：</span>
+        <p><b>综合评分：</b>满分100，越高综合评价越高，体现STAT对一只股票的综合评价</p>
+        <p><b>购买欲望值：</b>满分100，越高被买入的概率越大，体现一只股票积蓄的购买欲能量</p>
+        <p><b>击败率：</b>越高越好，体现STAT给予一只股票当日的表现评价</p>
+        <p><b>搜索量：</b>越高关注度越高，体现一只股票被搜索的累计次数，</p>
+        <p><b>历史最高：</b>体现一只股票上市以来的最高价</p>
+        <p><b>历史最低：</b>体现一只股票上市以来的最低价</p>
+        <p><b>历史均价：</b>体现一只股票上市以来的平均价格</p>
+        <p><b>最高连涨：</b>越高妖气越重，体现一只股票上市以来最大连续上涨天数</p>
+        <p><b>样本：</b>某只股票某日的详细表现数据</p>
+        <p><b>追踪：</b>重新获取数据并计算更新，生成新的数据</p>
+        <p><b>上涨概率：</b>越高下个交易日的上涨概率越大，STAT对股票上涨概率预测</p>
+        <p><b>下跌概率：</b>越高下个交易日的下跌概率越大，STAT对股票下跌概率预测</p>
+        <p><b>线性回归预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>岭回归预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>多项式预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>AI智能预测：</b>一种数学模型，STAT专有模型</p>
+        <p><b>累计预测：</b>STAT上线以来共对该股票预测了多少次</p>
+        <p><b>成功命中：</b>数学模型的预测价格与价格完全相同</p>
+        <p><b>命中率：</b>命中次数/累计预测次数</p>
+        <p><b>准确率：</b>越大误差越小，体现STAT的预测准确度</p>
+        <p><b>粉丝数量：</b>将该股票“加入自选股”的总人数</p>
+        <p><b>男女比例：</b>某只股票粉丝数量/女粉丝数量</p>
+        <p><b>年龄比例：</b>例：30多岁的粉丝最多/占60%</p>
+        <p><b>收入比例：</b>例：收入5000+的粉丝最多/占60%</p>
+        <p><b>经验比例：</b>例：3年炒股经验的粉丝最多/占60%</p>
+        <p><b>杠杆比例：</b>例：使用杠杆的粉丝最多/占60%</p>
+        <p><b>偏好比例：</b>例：喜欢短线操作的粉丝最多/占60%</p>
+        <p><b>职业比例：</b>例：机关党群的粉丝最多/占60%</p>
+        <p><b>TF-IDF关键词：</b>一种关键词提取算法，关键词得分越高，越能体现主题</p>
+        <p><b>Text-Rank关键词：</b>一种关键词提取算法，关键词得分越高，越能体现主题</p>
+    </div>
+</div>
+    <div id="section">
+        <div id="section_01">
+            <div id="title">关注排行</div>
+            <div id="article_04"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+        <div id="section_01">
+            <div id="title">搜索排行</div>
+            <div id="article_05"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+        <div id="section_01">
+            <div id="title">预测排行</div>
+            <div id="article_06"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+        <div id="section_01">
+            <div id="title">看涨排行</div>
+            <div id="article_07"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+        <div id="section_01">
+            <div id="title">购买欲排行</div>
+            <div id="article_01"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+
+        <div id="section_01">
+            <div id="title">评分排行</div>
+            <div id="article_02"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+
+        <div id="section_01">
+            <div id="title">连涨排行</div>
+            <div id="article_03"><img style="margin:50% 80px;" src="/static/img/load.gif"></div>
+        </div>
+    </div>
+</div>
+<script>
+var url = document.location.toString()
+var s_url = url.split('//')
+var s_url_str = s_url[1].split('/')
+var words = s_url_str[1]
+var code = decodeURI(words) //URL解码中文 否则乱码
+document.title = code + '_STAT搜索' //动态title
+var username = window.localStorage.getItem('st_user')
+var token = window.localStorage.getItem('st_token')
+var st_code = ''
+
+//发起搜索
+$('#get_stock_code').val(code)
+var get_url = 'http://123.57.74.30/v1/search_api?code=' + code
+    $.ajax({
+        type:'get',
+        url:get_url,
+        dataType:'json',
+        success:function(data){
+            if(data.code == 3000){
+                st_code = data.data.code
+                var html = ''
+                html += '<div id="tt">' + data.data.title + '(' + data.data.code + '.'+ data.data.bond +')' + '<span><a href="#" onclick="add_code()">+加入自选股</a></span></div>'
+                html += '<div id="view">'
+                html += '<div id="view_up"><span>看涨</span><br>' + data.data.up_pro + '%</div>'
+                html += '<div id="view_down"><span>看跌</span><br>' + data.data.down_pro + '%</div>'
+
+                html += '<div id="up_pro"></div>'
+                html += '<div id="down_pro"></div>'
+                html += '<div id="up">'+ data.data.view_up +'人<br><input type="button" id="up_bt" value="+看涨" onclick="view(1)"></div><div id="down">'+ data.data.view_down +'人<br><input type="button" id="down_bt" value="+看跌" onclick="view(2)"></div>'
+
+                html += '</div>'
+                html += '<div id="dt_new"><span>收盘价</span><br>' + data.data.close + '元</div>'
+                html += '<div id="dt_new"><span>开盘价</span><br>' + data.data.open + '元</div>'
+                html += '<div id="dt_new"><span>最高价</span><br>' + data.data.high + '元</div>'
+                html += '<div id="dt_new"><span>最低价</span><br>' + data.data.low + '元</div>'
+                html += '<div id="dt_new"><span>成交量</span><br>' + data.data.volume + '</div>'
+                html += '<div id="dt_new"><span>成交金额</span><br>' + data.data.turnover + '</div>'
+                html += '<div id="dt_new"><span>上涨金额</span><br>' + data.data.rise + '元</div>'
+                html += '<div id="dt_new"><span>上涨幅度</span><br>' + data.data.gain + '%</div>'
+
+                html += '<div id="s_t"></div>'
+                html += '<div id="dt"><span>综合评分</span><br>' + data.data.score + '分</div>'
+                html += '<div id="dt"><span>购买欲</span><br>' + data.data.desire_buy + '</div>'
+                html += '<div id="dt"><span>击败</span><br>' + data.data.beat + '%</div>'
+                html += '<div id="dt"><span>搜索量</span><br>' + data.data.lkc + '次</div>'
+                html += '<div id="dt"><span>历史最高</span><br>' + data.data.highest + '元</div>'
+                html += '<div id="dt"><span>历史最低</span><br>' + data.data.lowest + '元</div>'
+                html += '<div id="dt"><span>历史均价</span><br>' + data.data.average + '元</div>'
+                html += '<div id="dt"><span>最高连涨</span><br>' + data.data.days + '天，'  + data.data.day_count + '次' + '</div>'
+
+                html += '<div id="ai_t"></div>'
+                html += '<div id="dt"><span>共有样本</span><br>' + data.stats.allnum + '个</div>'
+                html += '<div id="dt"><span>追踪该股</span><br>' + data.data.tt + '次</div>'
+                html += '<div id="dt"><span>上涨概率</span><br>' + data.data.rp + '%</div>'
+                html += '<div id="dt"><span>下跌概率</span><br>' + data.data.fp + '%</div>'
+                html += '<div id="dt"><span>线性回归预测</span><br>' + data.data.linear_regression + '元</div>'
+                html += '<div id="dt"><span>岭回归预测</span><br>' + data.data.ridge_regression + '元</div>'
+                html += '<div id="dt"><span>多项式预测</span><br>' + data.data.polynomial_regression + '元</div>'
+                html += '<div id="dt"><span>AI智能预测</span><br>' + data.data.ai_prediction + '元</div>'
+                html += '<div id="dt"><span>累计预测</span><br>' + data.data.pre_num + '次</div>'
+                html += '<div id="dt"><span>成功命中</span><br>' + data.data.hit + '次</div>'
+                html += '<div id="dt"><span>命中率</span><br>' + data.data.hit_r + '%</div>'
+                html += '<div id="dt"><span>准确率</span><br>' + data.data.acc + '%</div>'
+
+                html += '<div id="uf_t"></div>'
+                html += '<div id="dt_01"><span>粉丝数量</span><br>' + data.data.hot + '人</div>'
+                html += '<div id="dt_01"><span>男女比例</span><br>' + data.data.prosex + '</div>'
+                html += '<div id="dt_01"><span>年龄比例</span><br>' + data.data.proage + '</div>'
+                html += '<div id="dt_01"><span>收入比例</span><br>' + data.data.proinc + '</div>'
+                html += '<div id="dt_01"><span>经验比例</span><br>' + data.data.proexp + '</div>'
+                html += '<div id="dt_01"><span>杠杆比例</span><br>' + data.data.prolev + '</div>'
+                html += '<div id="dt_01"><span>偏好比例</span><br>' + data.data.propre + '</div>'
+                html += '<div id="dt_01"><span>职业比例</span><br>' + data.data.proocc + '</div>'
+
+                html += '<div id="nlp_t"></div>'
+                var str_tup = data.data.nlp.split('/')
+                var idf_str = str_tup[0]
+                var rank_str = str_tup[1]
+
+                var idf_rep = idf_str.replace(/\,/g, "</span><span>")
+                var idf_01 = '<span>' + idf_rep + '</span>'
+                var idf_02 =  idf_01.replace(/\(/g,"<h3>")
+                var idf_03 = idf_02.replace(/\)/g,"</h3>")
+
+                var rank_rep = rank_str.replace(/\,/g, "</span><span>")
+                var rank_01 = '<span>' + rank_rep + '</span>'
+                var rank_02 =  rank_01.replace(/\(/g,"<h3>")
+                var rank_03 = rank_02.replace(/\)/g,"</h3>")
+
+                html += '<div id="nlp"><h2>TF-IDF关键词：</h2>' + idf_03 + '</div>'
+                html += '<div id="nlp"><h2>Text-Rank关键词：</h2>' + rank_03 + '</div>'
+
+                $('#info').html(html)
+                if(data.data.gain < 0){
+                    $("dt_new").css("color","green")
+                }
+                var width = data.data.up_pro*342/100 + 'px'
+                var width01 = 342 - data.data.up_pro*342/100 + 'px'
+                console.log(width,width01)
+                $('#down_pro').css('width',width01)
+                $('#up_pro').css('width',width)
+                $('#s_t').html('<h2>综合分析：</h2>STAT最后一次更新 <span>' + data.stats.up_date +  '</span> 共产生新数据<span> ' + data.stats.mknum + ' </span>条')
+                $('#ai_t').html('<h2>AI预测：</h2>STAT对<span> ' + data.stats.stnum + ' </span>支个股，进行了<span> '+data.stats.ttt+' </span>次单项追踪任务')
+                $('#uf_t').html('<h2>用户画像：</h2>STAT本次共完成了<span> ' + data.stats.usernum + ' </span>个用户的分析任务')
+                $('#nlp_t').html('<h2>舆情分析：</h2>STAT对<span> ' + data.data.title + '(' + data.data.code + ')' + ' </span> ' + data.stats.up_date + ' 当日的舆情做了关键词提取')
+            }else{
+                $('#info').html(code + data.error)
+            }
+        }
+
+    })
+
+
+//看涨看跌
+function view(view){
+    $.ajax({
+        type:'put',
+        url:'http://123.57.74.30/v1/search_api',
+        dataType:'json',
+        data:JSON.stringify({'username':username,'code':st_code,'view':view}),
+        beforeSend:function(request){request.setRequestHeader("Authorization", token)},
+        success:function(data){
+            if(data.code == 3000){
+                alert(data.error)
+                location.reload()
+            }else{
+                alert(data.error)
+                window.location.href="http://47.56.30.162/login"
+            }
+        }
+
+    })
+}
+
+//添加自选股
+
+function add_code(){
+    var code = $('#dt_bt').attr('title')
+    $.ajax({
+        type:'post',
+        url:'http://123.57.74.30/v1/search_api',
+        data:JSON.stringify({"username":username,"code":code}),
+        dataType:'json',
+        beforeSend: function(request) {
+           request.setRequestHeader("Authorization", token)
+       },
+        success:function(data){
+            if(data.code == 3000){
+                alert(code + '添加成功，请前往个人中心查看')
+                location.reload()
+            }else{
+                alert(data.error)
+            }
+        }
+    })
+}
+
+
+//右侧内容
+$.ajax({
+    type:'get',
+    url:'http://123.57.74.30/v1/search_api',
+    dataType:'json',
+    success:function(data){
+        if(data.code == 200){
+            var html_score = ''
+            var html_buy = ''
+            var html_days = ''
+            var html_hot = ''
+            var html_lkc = ''
+            var html_acc = ''
+            var html_view_up = ''
+
+
+            for (var i=0;i<data.data[0].length;i++){
+                //综合排行
+                var socre_num = data.data[0][i].num
+                var score_code = data.data[0][i].code
+                var score_title = data.data[0][i].title
+                var score_score = data.data[0][i].score
+                //购买欲排行
+                var buy_num = data.data[1][i].num
+                var buy_code = data.data[1][i].code
+                var buy_title = data.data[1][i].title
+                var buy_score = data.data[1][i].score
+                //连涨排行
+                var days_num = data.data[2][i].num
+                var days_code = data.data[2][i].code
+                var days_title = data.data[2][i].title
+                var days_score = data.data[2][i].score
+                //关注排行hot
+                var hot_num = data.data[3][i].num
+                var hot_code = data.data[3][i].code
+                var hot_title = data.data[3][i].title
+                var hot_score = data.data[3][i].score
+                //搜索排行lkc
+                var lkc_num = data.data[4][i].num
+                var lkc_code = data.data[4][i].code
+                var lkc_title = data.data[4][i].title
+                var lkc_score = data.data[4][i].score
+                //预测排行acc
+                var acc_num = data.data[5][i].num
+                var acc_code = data.data[5][i].code
+                var acc_title = data.data[5][i].title
+                var acc_score = data.data[5][i].score
+                //看涨排行view_up
+                var view_up_num = data.data[6][i].num
+                var view_up_code = data.data[6][i].code
+                var view_up_title = data.data[6][i].title
+                var view_up_score = data.data[6][i].score
+
+                html_view_up += '<h3>' + view_up_num + '</h3><li><span>' + view_up_score + '%</span><a href="http://47.56.30.162/' + view_up_code + '">' + view_up_title  + '</a> ('+ view_up_code + ')</li>'
+                html_acc += '<h3>' + acc_num + '</h3><li><span>' + acc_score + '</span><a href="http://47.56.30.162/' + acc_code + '">' + acc_title  + '</a> ('+ acc_code + ')</li>'
+                html_lkc += '<h3>' + lkc_num + '</h3><li><span>' + lkc_score + '</span><a href="http://47.56.30.162/' + lkc_code + '">' + lkc_title  + '</a> ('+ lkc_code + ')</li>'
+                html_hot += '<h3>' + hot_num + '</h3><li><span>' + hot_score + '</span><a href="http://47.56.30.162/' + hot_code + '">' + hot_title  + '</a> ('+ hot_code + ')</li>'
+                html_score += '<h3>' + socre_num + '</h3><li><span>' + score_score + '</span><a href="http://47.56.30.162/' + score_code + '">' + score_title  + '</a> ('+ score_code + ')</li>'
+                html_buy += '<h3>' + buy_num + '</h3><li><span>' + buy_score + '</span><a href="http://47.56.30.162/' + buy_code + '">' + buy_title  + '</a> ('+ buy_code + ')</li>'
+                html_days += '<h3>' + days_num + '</h3><li><span>' + days_score + '天</span><a href="http://47.56.30.162/' + days_code + '">' + days_title  + '</a> ('+ days_code +')</li>'
+
+            }
+
+            $('#article_01').html(html_score)
+            $('#article_02').html(html_buy)
+            $('#article_03').html(html_days)
+            $('#article_04').html(html_hot)
+            $('#article_05').html(html_lkc)
+            $('#article_06').html(html_acc)
+            $('#article_07').html(html_view_up)
+        }else{
+            alert(data.error)
+        }
+    }
+})
+
+
+//顶部状态栏
+
+var html = ''
+    if(username){
+        html += '<li><span><a href="/home/' + username +'">' + username +'</a></span></li>'
+        html += '<li><a href="/lab">实验室</a></li>'
+        html += '<li><a href="/">STAT首页</a></li>'
+        html += '<li><a href="#" onclick=logout()>退出</a></li>'
+        $('#guide_right').html(html)
+    }else{
+        html += '<li><a href="/login">登陆</a></li> <li><a href="/register">注册</a></li> <li><a href="/lab">实验室</a></li><li><a href="/">STAT首页</a></li>'
+        $('#guide_right').html(html)
+    }
+
+
+//搜索框提示
+$('#get_stock_code').on('input',function(){
+var input_data = $(this).val()
+    $.ajax({
+    type:'get',
+    url:'http://123.57.74.30/v1/search_api?kw=' + input_data,
+    dataType:'json',
+    success:function(data){
+        if(data.code == 3000){
+            var likewords = data.data.likewords
+            var html = '<div id="showwords">'
+            for (var i=0;i<likewords.length;i++){
+                code = likewords[i][0]
+                title = likewords[i][1]
+                html += '<li><a href="http://47.56.30.162/' + code + '">' + code + title + '</a></li>'
+            }
+            html += '</div>'
+            $('#show').html(html)
+        }else{
+            $('#show').html('<div id="showwords"><span>'+ input_data +'</span>' + data.error + '</div>')
+        }
+    }
+    })
+    })
+
+//失去焦点收起
+$('#get_stock_code').blur(
+   function(){
+     setTimeout(
+        function(){
+        $('#showwords').slideUp()
+    },400
+    )
+   }
+)
+//搜索
+function search(){
+        var input_data = $('#get_stock_code').val()
+        window.location.href="http://47.56.30.162/" + input_data
+
+}
+//回车搜索
+$(document).keyup(function(event){
+ if(event.keyCode ==13){
+  search()
+ }
+})
+
+//退出
+function logout(){
+   window.localStorage.clear()
+   location.reload()
+}
+</script>
+<div id="common_footer">© 2019-2020 stat.cc.All rights reserved &nbsp;&nbsp;&nbsp;<a href="/lab#help">帮助中心</a> </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册账号</title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/register.css"/>
+</head>
+<body>
+    <div id="reg_page">
+        <div id="loading"></div>
+        <h1>STAT</h1>
+        <div id="text_i">欢迎注册</div>
+        <p><input type="text" id="username" placeholder="创建用户名"></p>
+        <div id="show_username"></div>
+        <p><input type="password" id="password" placeholder="设置密码"></p>
+        <div id="show_password"></div>
+        <p><input type="password" id="password1" placeholder="再次输入密码"></p>
+        <div id="show_password1"></div>
+        <p><input type="email" id="email" placeholder="设置邮箱"></p>
+        <div id="show_email"></div>
+        <p> <button id="register">注册</button></p>
+        <p>已有账号? <a href="/login">马上登陆</a>，<a href="/">返回首页</a></p>
+    </div>
+    <div id="common_footer">© 2019-2020 stat.cc.All rights reserved &nbsp;&nbsp;<a href="/lab">实验室</a> &nbsp;&nbsp;<a href="/lab#help">帮助中心</a> </div>
+<script>
+//登陆状态校验
+var token = window.localStorage.getItem('st_token')
+var username = window.localStorage.getItem('st_user')
+if (token){
+    $.ajax({
+        type:'get',
+        url:'http://123.57.74.30/v1/users/login_check_api?username=' + username,
+        dataType:'json',
+        beforeSend:function(request){
+            request.setRequestHeader('Authorization',token)
+        },
+        success:function(data){
+            if(data.code == 1000){
+                window.location = '/home/' + data.username
+            }else{
+                alert(data.error)
+            }
+        }
+
+    })
+}
+
+//失去焦点校验用户名合法性
+function check_username(){
+$.get("http://123.57.74.30/v1/users/check_username_api?username=" + $("#username").val(),function(data){
+  if (data.error == '该用户名可用'){
+    var html = '<span style = "color:green">'+ data.error + '</span>'
+    $("#show_username").html(html)
+  }else{
+    var html = '<span style = "color:red">'+ data.error + '</span>'
+    $("#show_username").html(html)
+  }
+},"json");
+}
+
+$("#username").blur(
+function(){
+  check_username()
+})
+
+//同上 校验密码合法性
+function check_password(){
+$.get("http://123.57.74.30/v1/users/check_password_api?password=" + $("#password").val(),function(data){
+  if (data.error == '密码可用'){
+    var html = '<span style = "color:green">'+ data.error + '</span>'
+    $("#show_password").html(html)
+  }else{
+    var html = '<span style = "color:red">'+ data.error + '</span>'
+    $("#show_password").html(html)
+  }
+},"json");
+}
+$("#password").blur(
+function(){
+  check_password()
+})
+
+//同上 校验二次密码合法性
+function check_password1(){
+        $.get("http://123.57.74.30/v1/users/check_password1_api?password=" + $("#password").val() + "&" + "password1=" + $("#password1").val(),function(data){
+          if (data.error == '密码一致'){
+            var html = '<span style = "color:green">'+ data.error + '</span>'
+            $("#show_password1").html(html)
+          }else{
+            var html = '<span style = "color:red">'+ data.error + '</span>'
+            $("#show_password1").html(html)
+          }
+        },"json");
+      }
+        $("#password1").blur(
+        function(){
+          check_password1()
+        })
+
+//同上 校验邮箱合法性
+function check_email(){
+$.get("http://123.57.74.30/v1/users/check_email_api?email=" + $("#email").val(),function(data){
+  if (data.error == '邮箱可用'){
+    var html = '<span style = "color:green">'+ data.error + '</span>'
+    $("#show_email").html(html)
+  }else{
+    var html = '<span style = "color:red">'+ data.error + '</span>'
+    $("#show_email").html(html)
+  }
+},"json");
+}
+$("#email").blur(
+function(){
+  check_email()
+})
+
+//提交注册
+$("#register").click(function(){
+$('#loading').html('<img src="/static/img/load.gif">')
+$.post("http://123.57.74.30/v1/users",JSON.stringify({
+  username:$("#username").val(),
+  password:$("#password").val(),
+  email:$("#email").val()
+}),function(data){
+        if(600 == data.code){
+            localStorage.setItem('st_token', data.data.token)
+            localStorage.setItem('st_user', data.username)
+            alert("注册成功")
+            window.location.href = '/home/' + data.username +'/check_code'
+        }else{
+            alert(data.error)
+        }
+
+},"json");
+});
+
+
+</script>
+
+</body>
+</html>

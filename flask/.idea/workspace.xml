@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e5658d0c-2282-4670-803e-8c441b31c6e1" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1W1h9ih1oNWjxMldaRRLQjGqYz2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../stocks_tools" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/static/js" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.app">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="stocks_tools_client" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="myjwt" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="stocks_tools_client" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../stocks_tools/tools" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stocks_tools/tools/myjwt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tests" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="stocks_tools_client" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../stocks_tools/user" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../stocks_tools/user/tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.tests" />
+        <item itemvalue="Python.myjwt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e5658d0c-2282-4670-803e-8c441b31c6e1" name="Default Changelist" comment="" />
+      <created>1578322858325</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578322858325</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="447" y="207" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578323092805">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state x="447" y="207" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.34.1853.1046@67.34.1853.1046" timestamp="1578323092805" />
+    <state x="723" y="257" width="530" height="600" key="FileChooserDialogImpl" timestamp="1581939269000">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state x="723" y="257" width="530" height="600" key="FileChooserDialogImpl/67.34.1853.1046@67.34.1853.1046" timestamp="1581939269000" />
+    <state width="1821" height="259" key="GridCell.Tab.0.bottom" timestamp="1581939271081">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state width="1821" height="259" key="GridCell.Tab.0.bottom/67.34.1853.1046@67.34.1853.1046" timestamp="1581939271081" />
+    <state width="1821" height="259" key="GridCell.Tab.0.center" timestamp="1581939271080">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state width="1821" height="259" key="GridCell.Tab.0.center/67.34.1853.1046@67.34.1853.1046" timestamp="1581939271080" />
+    <state width="1821" height="259" key="GridCell.Tab.0.left" timestamp="1581939271079">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state width="1821" height="259" key="GridCell.Tab.0.left/67.34.1853.1046@67.34.1853.1046" timestamp="1581939271079" />
+    <state width="1821" height="259" key="GridCell.Tab.0.right" timestamp="1581939271080">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state width="1821" height="259" key="GridCell.Tab.0.right/67.34.1853.1046@67.34.1853.1046" timestamp="1581939271080" />
+    <state x="351" y="103" width="1284" height="907" key="SettingsEditor" timestamp="1578323501902">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state x="351" y="103" width="1284" height="907" key="SettingsEditor/67.34.1853.1046@67.34.1853.1046" timestamp="1578323501902" />
+    <state x="572" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1578409711545">
+      <screen x="67" y="34" width="1853" height="1046" />
+    </state>
+    <state x="572" y="45" width="840" height="1034" key="search.everywhere.popup/67.34.1853.1046@67.34.1853.1046" timestamp="1578409711545" />
+  </component>
+</project>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>邮箱验证</title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/send_code_info.css"/>
+</head>
+<body>
+<div id="common_header"></div>
+<div id="send_code_info"><img style="margin:130px 145px;" src="/static/img/load.gif"></div>
+<script>
+    var token = window.localStorage.getItem('st_token')
+    var username = window.localStorage.getItem('st_user')
+    var email = ''
+    if(username){
+            var html = ''
+            html += '<li><a href="/">STAT首页</a></li>'
+            html += html = '<li><a href="#" onclick=logout()>退出</a></li>'
+            html += html = '<li><span><a href="/home/' + username +'">' + username +'</a></span></li>'
+            $('#common_header').html(html)
+        }else{
+            window.location.href = '/login'
+        }
+
+    function logout(){
+       window.localStorage.clear()
+       location.reload()
+    }
+
+
+    $.ajax({
+        type:'get',
+        url:'http://123.57.74.30/v1/users/'+ username + '/login_check_api',
+        dataType:'json',
+        beforeSend:function(request){
+            request.setRequestHeader('Authorization',token)
+        },
+        success:function(data){
+            if(data.code == 1000){
+                email = data.email
+                html = '<h1>STAT</h1>'
+                html += '<p>邮箱验证</p>'
+                html += '<p>您的邮箱：' + email + '<input type="button" id="btn" value="获取验证码" onclick="settime(this),get_code()" /></p>'
+                html += '<p>请输入收到的验证码：<input type="text" id="post_code"><button onclick="send_code()" id="send_code">点击验证</button></p>'
+                html += '<p>您可以 <a href="/home/' + username + '">跳过此步</a> 直接进入个人中心</p>'
+                $('#send_code_info').html(html)
+            }else{
+                alert(data.error)
+                window.location.href = '/login'
+            }
+        }
+
+    })
+
+
+    var countdown=60;
+    function settime(val) {
+            if (countdown == 0) {
+                val.removeAttribute("disabled");
+                val.value="免费获取验证码";
+                countdown = 60;
+            } else {
+                val.setAttribute("disabled", true);
+                val.value="重新发送(" + countdown + ")";
+                countdown--;
+                setTimeout(function() {
+                    settime(val)
+                },1000)
+            }
+
+        }
+
+
+
+    function send_code(){
+
+        var put_data = {
+            'username':username,
+            'check_code':$("#post_code").val(),
+        }
+        if(put_data.check_code){
+            $.ajax({
+                type:'put',
+                url:'http://123.57.74.30/v1/users/'+ username + '/check_code_api',
+                dataType:'json',
+                contentType:'applocation/json',
+                data:JSON.stringify(put_data),
+                beforeSend:function(request){
+                        request.setRequestHeader('Authorization',token)
+                    },
+                success:function(data){
+                    console.log(data.code)
+                    if(data.code == 1009){
+                        alert(data.error)
+                        window.location.href = '/home/' + username
+                    }else{
+                        alert(data.error)
+                    }
+                }
+            })
+        }else{
+            alert('验证码不能为空')
+        }
+
+    }
+
+
+
+    function get_code(){
+        var post_data = {
+                'send_type':'0',
+                'username':username,
+                'email':email,
+            }
+        $.ajax({
+            type:"post",
+            url:"http://123.57.74.30/v1/users/" + username +"/check_code_api",
+            contentType:"application/app",
+            dataType:"json",
+            data:JSON.stringify(post_data),
+            beforeSend:function(request){
+                request.setRequestHeader("Authorization",token)
+            },
+            success:function(data){
+                if(data.code == 1000){
+                    alert(data.error)
+                    window.location = '/home/' + data.username
+                }else{
+                    alert(data.error)
+                }
+            },
+        })
+    }
+
+</script>
+<div id="common_footer">© 2019-2020 stat.cc.All rights reserved&nbsp;&nbsp;<a href="/lab">实验室</a> &nbsp;&nbsp;<a href="/lab#help">帮助中心</a> </div>
+</body>
+</html>

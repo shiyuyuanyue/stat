@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登陆</title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css"/>
+</head>
+<body>
+<div id="login_main">
+
+    <div id="login_page">
+        <div id="loading"></div>
+        <H1>STAT</H1>
+        <p>欢迎登陆</p>
+        <p><input type="text" id="username"></p>
+        <p><input type="password" id="password"></p>
+        <p><button id="login">登陆</button></p>
+        <p>还没有账号?&nbsp;<a href="/register">前往注册</a>，<a href="/">返回首页</a></p>
+    </div>
+    <div id="common_footer">© 2019-2020 stat.cc.All rights reserved &nbsp;&nbsp;<a href="/lab">实验室</a> &nbsp;&nbsp;<a href="/lab#help">帮助中心</a> </div>
+</div>
+
+
+<script>
+//登陆状态校验
+var username = window.localStorage.getItem('st_user')
+var token = window.localStorage.getItem('st_token')
+if (token){
+    $.ajax({
+        type:'get',
+        url:'http://123.57.74.30/v1/users/login_check_api?username=' + username,
+        dataType:'json',
+        beforeSend:function(request){
+            request.setRequestHeader('Authorization',token)
+        },
+        success:function(data){
+            if(data.code == 1000){
+                window.location = '/home/' + data.username
+            }else{
+                alert(data.error)
+            }
+        }
+
+    })
+}
+//登陆
+function login(){
+    $.ajax({
+            type:"post",
+            url:'http://123.57.74.30/v1/token',
+            data:JSON.stringify({username:$('#username').val(),password:$('#password').val()}),
+            dataType:"json",
+            success:function(data){
+                        if(data.code == 500){
+                        localStorage.setItem('st_token',data.data.token)
+                        localStorage.setItem('st_user',data.username)
+                        $('#loading').empty()
+                        refer_url = document.referrer
+                        if (refer_url.search('127.0.0.1') != -1){
+                        window.location = refer_url;
+                            }else{
+                                window.location = '/home/' + data.username
+                                 }
+                        }else{
+                            alert(data.error)
+                                }
+
+                        }
+                   })
+            }
+
+
+$('#login').click(
+function(){
+    $('#loading').html('<img src="/static/img/load.gif">')
+    login()
+    }
+)
+
+//回车键登陆
+$(document).keyup(function(event){
+ if(event.keyCode ==13){
+  login()
+ }
+})
+</script>
+
+
+</body>
+</html>

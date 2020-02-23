@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css"/>
+</head>
+<body>
+<div id="common_header"></div>
+<div id="main">
+    <div id="info"><img style="margin:230px 110px;" src="/static/img/load.gif"></div>
+    <div id="ost">
+        <div id="ost_t"><img style="margin:230px 240px;" src="/static/img/load.gif"></div>
+        <div id="ost_main"></div>
+    </div>
+</div>
+
+<div id="common_footer">© 2019-2020 stat.cc.All rights reserved <a href="/lab">实验室</a> </div>
+<script>
+var token = window.localStorage.getItem('st_token')
+var username = window.localStorage.getItem('st_user')
+var url = window.location.href
+var url_username = url.split('home/')[1]
+var request_url = 'http://123.57.74.30/v1/users/'+ url_username
+
+//校验登陆状态 转换顶部显示
+    if(username){
+        var html = '<span><a href="/">STATHOME</a></span>'
+        html += '<li><a href="/">STAT首页</a></li>'
+        html += html = '<li><a href="#" onclick=logout()>退出</a></li>'
+        html += html = '<li><span><a href="/home/' + username +'">' + username +'</a></span></li>'
+        $('#common_header').html(html)
+    }else{
+        $('#common_header').html('<span><a href="/">STATHOME</a></span><li><a href="/login">登陆</a></li> <li><a href="/register">注册</a></li> <li><a href="/">STAT首页</a></li>')
+    }
+
+//加载用户信息
+$.get('http://123.57.74.30/v1/users/'+ url_username,
+    function(data){
+        var html = ''
+        if(data.code == 400){
+            if(data.data.avatar){
+                 var avatar_user = 'http://123.57.74.30/media/' + data.data.avatar
+                 html += '<div id="avatar1"><img  height="128" width="128" src="' + avatar_user + '" alt="'+ data.username +'"></div>'
+            }else{
+                var avatar_defult = 'http://123.57.74.30/media/x.png'
+                if(data.data.gender == "男"){
+                    avatar_defult = 'http://123.57.74.30/media/m.png'
+                }else{
+                    avatar_defult = 'http://123.57.74.30/media/m.png'
+                }
+                html += '<div id="avatar1"><img height="128" width="128" src="' + avatar_defult + '" alt="'+ data.username +'"></div>'
+            }
+
+            html += '<h1>' + data.username + '</h1>'
+            html += '<p>邮箱：' + data.data.email + '</p>'
+            html += '<p>性别：' + data.data.gender + '</p>'
+            html += '<p>年龄：' + data.data.age + '</p>'
+            html += '<p>收入：' + data.data.salary + '</p>'
+            html += '<p>职业：' + data.data.Occupation + '</p>'
+            html += '<p>偏好：' + data.data.partiality + '</p>'
+            html += '<p>经验：' + data.data.experience + '</p>'
+            html += '<p>杠杆：' + data.data.lever + '</p>'
+            document.title = data.username + '的个人中心_STAT'
+            if(username){
+                html += '<div id="text"><a href="/home/' + data.username + '/check_code">' + '验证邮箱</a><a href="/home/' + data.username + '/change">' + '修改信息</a><a href="" onclick=logout()>退出登陆</a></div>'
+            }else{
+                html += '<div id="text">未登录，请您<a href="/login">登陆</a><a href="/register">注册</a><a href="/">返回首页</a></div>'
+                $('#ost_t').html('仅用户自己可见')
+            }$('#info').html(html)
+        }else{
+            alert(data.error)
+            window.location = '/login'
+        }
+    },
+    'json')
+
+
+//加载该用户自选股数据
+    $.ajax({
+    type:"get",
+    url:"http://123.57.74.30/v1/search_api?ost_user=" + username,
+    dataType:"json",
+    success:function(data){
+        if(data.code==3000){
+                var listdatas = data.data
+                if(listdatas.length != 0){
+                    var html = ''
+                    for(var i=0;i<listdatas.length;i++){
+                        html += '<div id="stock_info">'
+                        html += '<div id="tt">' + listdatas[i].title + '(' + listdatas[i].code + ')' + '<span><a href="/' + listdatas[i].code + '">详情>></a></span><span><a href="#" onclick="del_code(' + listdatas[i].code + ' )">删除</a></span><span>最后更新：' + listdatas[i].date + '</span></div>'
+                        html += '<div id="score"><span>打败</span><br>' + listdatas[i].beat + '%</div>'
+                        html += '<p><span>历史最高：</span>' + listdatas[i].highest + '</p>'
+                        html += '<p><span>历史最低：</span>' + listdatas[i].lowest + '</p>'
+                        html += '<p><span>历史均价：</span>' + listdatas[i].average + '</p>'
+                        html += '<p><span>购买欲望：</span>' + listdatas[i].desire_buy + '</p>'
+                        html += '<p><span>AI预测：</span>' + listdatas[i].ai_prediction + '</p>'
+                        html += '<p><span>最高连涨：</span>' + listdatas[i].days + '天</p>'
+                        html += '<p><span>综合得分：</span>' + listdatas[i].score + '</p>'
+                        html += '<p><span>搜索热度：</span>' + listdatas[i].lkc + '</p>'
+                        html += '<p><span>上涨概率：</span>' + listdatas[i].rp + '%</p>'
+                        html += '</div>'
+                        }
+                    add_show()
+                    $('#ost_main').html(html)
+                }else{
+                    $('#ost_t').html('<div id="add" >空空如也！ <a href="#" onclick="add_show()">添加自选股</a></div>')
+                }
+
+        }else{
+            alert(data.error)
+        }
+    }
+
+})
+
+
+
+//显示添加自选股输入框
+function add_show(){
+    var html = '<input type="text" id="add_code" placeholder="输入6位股票代码"><input type="button" id="add_bt" value="添加" onclick="add_code()">'
+    $('#ost_t').html(html)
+}
+
+//添加自选股
+function add_code(){
+    $.ajax({
+        type:'post',
+        url:'http://123.57.74.30/v1/search_api',
+        data:JSON.stringify({"username":username,"code":$('#add_code').val()}),
+        dataType:'json',
+        beforeSend: function(request) {
+           request.setRequestHeader("Authorization", token)
+       },
+        success:function(data){
+            if(data.code == 3000){
+                location.reload()
+            }else{
+                alert(data.error)
+            }
+        }
+    })
+}
+//删除自选股
+
+function del_code(code){
+    $.ajax({
+        type:'delete',
+        url:'http://123.57.74.30/v1/search_api',
+        data:JSON.stringify({"username":username,"code":code}),
+        dataType:'json',
+        beforeSend: function(request) {
+           request.setRequestHeader("Authorization", token)
+       },
+        success:function(data){
+            if(data.code == 3000){
+                location.reload()
+            }else{
+                alert(data.error)
+            }
+        }
+    })
+}
+
+//退出
+function logout(){
+   window.localStorage.clear()
+   location.reload()
+}
+</script>
+
+</body>
+</html>

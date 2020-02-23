@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STAT_股票数据分析平台</title>
+    <script src="/static/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css"/>
+</head>
+<body>
+<div id="common_header"></div>
+<div id="search_style">
+    <p><a href="/">STAT</a>2.1.2.beta</p>
+    <input type="text" id="get_stock_code" placeholder="输入股票代码或名称"><input type="button" id="search" value="搜索" onclick="search()">
+    <div id="show"></div>
+</div>
+<script>
+//校验登陆状态 转换顶部显示
+var username = window.localStorage.getItem('st_user')
+    if(username){
+        var html = ''
+        html += html = '<li><a href="/lab">实验室</a></li><li><a href="#" onclick=logout()>退出</a></li>'
+        html += html = '<li><span><a href="/home/' + username +'">' + username +'</a></span></li>'
+        $('#common_header').html(html)
+    }else{
+        $('#common_header').html('<li><a href="/lab">实验室</a></li><li><a href="/register">注册</a></li><li><a href="/login">登陆</a></li>')
+    }
+
+//登出
+function logout(){
+   window.localStorage.clear()
+   location.reload()
+}
+
+//搜索框输入提示
+$('#get_stock_code').on('input',function(){
+var input_data = $(this).val()
+$.ajax({
+type:'get',
+url:'http://123.57.74.30/v1/search_api?kw=' + input_data,
+dataType:'json',
+success:function(data){
+    if(data.code == 3000){
+        var likewords = data.data.likewords
+        var html = '<div id="showwords">'
+        for (var i=0;i<likewords.length;i++){
+            code = likewords[i][0]
+            title = likewords[i][1]
+            html += '<li><a href="http://47.56.30.162/' + code + '">' + code + title + '</a></li>'
+        }
+        html += '</div>'
+        $('#show').html(html)
+    }else{
+        $('#show').html('<div id="showwords"><span>'+ input_data +'</span>' + data.error + '</div>')
+    }
+}
+})
+})
+//搜索框失去焦点 收起提示列表
+$('#get_stock_code').blur(
+   function(){
+     setTimeout(
+        function(){
+        $('#showwords').slideUp()
+    },400
+    )
+   }
+)
+
+//搜索
+function search(){
+        var input_data = $('#get_stock_code').val()
+        window.location.href="http://47.56.30.162/" +input_data
+}
+//回车搜索
+$(document).keyup(function(event){
+ if(event.keyCode ==13){
+  search()
+ }
+})
+</script>
+<div id="common_footer"><div id="common_footer_info"><br><br>© 2019-2020 stat all rights reserved  &nbsp;&nbsp;<a href="/lab#help" target="_blank">帮助中心</a></div></div>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>实验室_STAT</title>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/canvas.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/lab.css"/>
+</head>
+<body>
+<div id="header">
+    <canvas id="myCanvas" width="1000" height="400" ></canvas>
+    <div id="guide">
+        <div id="logo_m"><a href="/">STATlab</a></div>
+        <div id="guide_right"></div>
+    </div>
+    <div id="logo" >STAT lab</div>
+    <div id="desc">股票实时数据分析，人工智能技术预测，每日推荐优质好股</div>
+    <div id="search_style">
+        <input type="text" id="get_stock_code" placeholder="输入股票代码或名称">
+        <input type="button" id="search" value="搜索" onclick="search()">
+        <div id="show">
+        </div>
+    </div>
+</div>
+<div id="main">
+    <div id="stats"><img style="margin:30px 364px;" src="/static/img/load.gif"></div>
+     <div id="tt"><span>LOG</span>·工作日志</div>
+<div id="log">
+        <p><span style="color:#ff9d00">计划中</span><b>股票对比：</b>用于用户对比两只股票<em>2020-02-20</em></p>
+        <p><span style="color:#ff9d00">计划中</span><b>用户留言：</b>用于用户发表个人留言<em>2020-02-20</em></p>
+        <p><span style="color:#f00">进行中</span><b>实验室：</b>用于体现stat平台的日常工作概况<em>2020-02-18</em></p>
+        <p><span>已完成</span><b>帮助中心：</b>用于展示相关术语释义及功能介绍<em>2020-02-16</em></p>
+        <p><span>已完成</span><b>看涨看跌：</b>用于用户股票搜索页面发布看涨看跌观点<em>2020-02-16</em></p>
+        <p><span>已完成</span><b>排行榜：</b>用于统计股票排行信息<em>2020-02-14</em></p>
+        <p><span>已完成</span><b>数据统计：</b>用于统计某些全局数据<em>2020-02-14</em></p>
+        <p><span>已完成</span><b>nlp关键词：</b>用于体现某只股票的网络舆情关键词提取<em>2020-02-13</em></p>
+        <p><span>已完成</span><b>用户画像：</b>用于体现某只股票的关注者属性信息<em>2020-02-13</em></p>
+        <p><span>已完成</span><b>实时行情：</b>用于展示某只股票上个交易日的数据信息<em>2020-02-12</em></p>
+        <p><span>已完成</span><b>加入自选股：</b>用于用户添加某只股票为自选股<em>2020-02-11</em></p>
+        <p><span>已完成</span><b>AI预测：</b>用于对某只股票的价格预测及相关统计<em>2020-02-10</em></p>
+        <p><span>已完成</span><b>购买欲：</b>用于体现某只股票积蓄的购买欲望值<em>2020-02-10</em></p>
+        <p><span>已完成</span><b>综合评分：</b>用于体现某只股票的综合表现评分<em>2020-02-09</em></p>
+        <p><span>已完成</span><b>stat搜索：</b>用于用户搜索某只股票获取数据信息<em>2020-02-08</em></p>
+        <p><span>已完成</span><b>邮箱验证：</b>用于用户修改密码校验身份<em>2020-02-03</em></p>
+        <p><span>已完成</span><b>checkstockdata：</b>用于校验全局股票数据完整性<em>2020-02-02</em></p>
+        <p><span>已完成</span><b>stathome：</b>用于用户个人页面添加删除自选股<em>2020-02-02</em></p>
+        <p><span>已完成</span><b>用户系统：</b>用于用户注册平台账号和登陆<em>2020-01-30</em></p>
+        <p><span>已完成</span><b>makedata：</b>用于全局数据更新加工<em>2020-01-25</em></p>
+        <p><span>已完成</span><b>makescore：</b>用于更新购买欲和综合评分<em>2020-01-05</em></p>
+        <p><span>已完成</span><b>每日更新：</b>用于每日增量爬取股票数据<em>2020-01-03</em></p>
+        <p><span>已完成</span><b>分布式爬虫：</b>用于爬取所有原始股票数据<em>2020-01-03</em></p>
+        <p><span>已完成</span><b>makefans：</b>用于给所有股票批量随机添加虚拟粉丝<em>2020-01-02</em></p>
+        <p><span>已完成</span><b>makeuser：</b>用于批量随机添加用户<em>2020-01-01</em></p>
+    </div>
+<a href="#" name="help"></a>
+    <div id="tt"><span>HELP</span>·帮助中心</div>
+    <div id="help">
+
+        <p><b>综合评分：</b>满分100，越高综合评价越高，体现STAT对一只股票的综合评价</p>
+        <p><b>购买欲望值：</b>满分100，越高被买入的概率越大，体现一只股票积蓄的购买欲能量</p>
+        <p><b>击败率：</b>越高越好，体现STAT给予一只股票当日的表现评价</p>
+        <p><b>搜索量：</b>越高关注度越高，体现一只股票被搜索的累计次数，</p>
+        <p><b>历史最高：</b>体现一只股票上市以来的最高价</p>
+        <p><b>历史最低：</b>体现一只股票上市以来的最低价</p>
+        <p><b>历史均价：</b>体现一只股票上市以来的平均价格</p>
+        <p><b>最高连涨：</b>越高妖气越重，体现一只股票上市以来最大连续上涨天数</p>
+        <p><b>样本：</b>某只股票某日的详细表现数据</p>
+        <p><b>追踪：</b>重新获取数据并计算更新，生成新的数据</p>
+        <p><b>上涨概率：</b>越高下个交易日的上涨概率越大，STAT对股票上涨概率预测</p>
+        <p><b>下跌概率：</b>越高下个交易日的下跌概率越大，STAT对股票下跌概率预测</p>
+        <p><b>线性回归预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>岭回归预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>多项式预测：</b>一种数学模型，用于连续性预测</p>
+        <p><b>AI智能预测：</b>一种数学模型，STAT专有模型</p>
+        <p><b>累计预测：</b>STAT上线以来共对该股票预测了多少次</p>
+        <p><b>成功命中：</b>数学模型的预测价格与价格完全相同</p>
+        <p><b>命中率：</b>命中次数/累计预测次数</p>
+        <p><b>准确率：</b>越大误差越小，体现STAT的预测准确度</p>
+        <p><b>粉丝数量：</b>将该股票“加入自选股”的总人数</p>
+        <p><b>男女比例：</b>某只股票粉丝数量/女粉丝数量</p>
+        <p><b>年龄比例：</b>例：30多岁的粉丝最多/占60%</p>
+        <p><b>收入比例：</b>例：收入5000+的粉丝最多/占60%</p>
+        <p><b>经验比例：</b>例：3年炒股经验的粉丝最多/占60%</p>
+        <p><b>杠杆比例：</b>例：使用杠杆的粉丝最多/占60%</p>
+        <p><b>偏好比例：</b>例：喜欢短线操作的粉丝最多/占60%</p>
+        <p><b>职业比例：</b>例：机关党群的粉丝最多/占60%</p>
+        <p><b>TF-IDF关键词：</b>一种关键词提取算法，关键词得分越高，越能体现主题</p>
+        <p><b>Text-Rank关键词：</b>一种关键词提取算法，关键词得分越高，越能体现主题</p>
+    </div>
+
+
+
+</div>
+
+<div id="footer">
+    <div id="footer_sec">
+       <div id="section">
+            <div id="article_01"></div>
+            <div id="article_02"></div>
+           <div id="article_03"></div>
+        </div>
+        <div id="footer_info">© 2019-2020 stat.cc.all rights reserved</div>
+    </div>
+</div>
+<script>
+
+//校验顶部状态
+var username = window.localStorage.getItem('st_user')
+if(username){
+        var html = ''
+        html += '<li><a href="/">STAT首页</a></li><li><a href="/lab">实验室</a></li> '
+        html += html = '<li><a href="#" onclick=logout()>退出</a></li>'
+        html += html = '<li><span><a href="/home/' + username +'">' + username +'</a></span></li>'
+        $('#guide_right').html(html)
+    }else{
+        $('#guide_right').html('<li><a href="/login">登陆</a> </li><li><a href="/register">注册</a> </li><li><a href="/">STAT首页</a> </li>')
+    }
+//统计数据
+$.ajax({
+    type:'get',
+    url:'http://123.57.74.30/v1/search_api?code=allstatsdatas',
+    dataType:'json',
+    success:function(data){
+        if(data.code == 200){
+            var html = ''
+            var allnum = data.data.allnum //原始数据总数
+            var stnum = data.data.stnum //股票总数
+            var mknum = data.data.mknum //生成数据总数
+            var usernum = data.data.usernum //用户总数
+            var ttt = data.data.ttt //追踪总数
+            var up_date = data.data.up_date //更新日期
+            var allacc = data.data.allacc //总准确率
+            html += '<p><span> ' + Math.round(allnum/10000) +'万+ </span>条样本</p><p><span> ' + Math.round(allnum*12/100000000) + '亿+ </span>条特征</p><p><span> '+Math.round(mknum/10000)+'万+ </span>条新数据</p>'
+            html += '<p><span> '+Math.round(ttt/10000)+'万+ </span>次追踪</p><p><span> '+stnum+' </span>只股票</p><p><span>'+allacc+'% </span>准确率</p>'
+            html += '<div id="date"><div id="date_info">最后更新: '+up_date+'</div></div>'
+            $('#stats').html(html)
+        }else{
+            alert(data.error)
+        }
+    }
+})
+//输入框输入
+$('#get_stock_code').on('input',function(){
+input_data = $(this).val()
+$.ajax({
+type:'get',
+url:'http://123.57.74.30/v1/search_api?kw=' + input_data,
+dataType:'json',
+success:function(data){
+    if(data.code == 3000){
+        likewords = data.data.likewords
+        var html = '<div id="showwords">'
+        for (var i=0;i<likewords.length;i++){
+            code = likewords[i][0]
+            title = likewords[i][1]
+            html += '<li><a href="http://47.56.30.162/' + code + '">' + code +'&nbsp;'+ title + '</a></li>'
+        }
+        html += '</div>'
+        $('#show').html(html)
+
+    }else{
+        $('#show').html('<div id="showwords"><span>'+ input_data +'</span>' + data.error + '</div>')
+    }
+
+}
+
+})
+})
+//输入框失去焦点
+$('#get_stock_code').blur(
+   function(){
+     setTimeout(
+        function(){
+        $('#showwords').slideUp()
+    },400
+    )
+   }
+)
+
+//输入框输入
+$('#get_stock_code').on('input',function(){
+input_data = $(this).val()
+$.ajax({
+type:'get',
+url:'http://123.57.74.30/v1/search_api?kw=' + input_data,
+dataType:'json',
+success:function(data){
+    if(data.code == 3000){
+        likewords = data.data.likewords
+        var html = '<div id="showwords">'
+        for (var i=0;i<likewords.length;i++){
+            code = likewords[i][0]
+            title = likewords[i][1]
+            html += '<li><a href="http://47.56.30.162/' + code + '">' + code +'&nbsp;'+ title + '</a></li>'
+        }
+        html += '</div>'
+        $('#show').html(html)
+
+    }else{
+        $('#show').html('<div id="showwords"><span>'+ input_data +'</span>' + data.error + '</div>')
+    }
+
+}
+
+})
+})
+
+//搜索
+function search(){
+        var input_data = $('#get_stock_code').val()
+        window.location.href="http://47.56.30.162/" + input_data
+}
+//退出
+function logout(){
+   window.localStorage.clear()
+   location.reload()
+}
+//底部推荐
+$.ajax({
+    type:'get',
+    url:'http://123.57.74.30/v1/search_api',
+    dataType:'json',
+    success:function(data){
+        if(data.code == 200){
+            var html_score = ''
+            var html_buy = ''
+            var html_days = ''
+
+            for (var i=0;i<data.data[0].length;i++){
+                var socre_num = data.data[0][i].num
+                var score_code = data.data[0][i].code
+                var score_title = data.data[0][i].title
+                var score_score = data.data[0][i].score
+
+                var buy_num = data.data[1][i].num
+                var buy_code = data.data[1][i].code
+                var buy_title = data.data[1][i].title
+                var buy_score = data.data[1][i].score
+
+                var days_num = data.data[2][i].num
+                var days_code = data.data[2][i].code
+                var days_title = data.data[2][i].title
+                var days_score = data.data[2][i].score
+
+                html_score += '<li><a href="http://47.56.30.162/' + score_code + '">' + score_title  + '</a> </li>'
+                html_buy += '<li><a href="http://47.56.30.162/' + buy_code + '">' + buy_title  + '</a> </li>'
+                html_days += '<li><a href="http://47.56.30.162/' + days_code + '">' + days_title  + '</a> </li>'
+            }
+            $('#article_01').html('<span>好股推荐：</span>' + html_score )
+            $('#article_02').html('<span>热门推荐：</span>' + html_buy )
+            $('#article_03').html('<span>连涨推荐：</span>' + html_days )
+        }else{
+            alert(data.error)
+        }
+    }
+})
+//回车搜索
+$(document).keyup(function(event){
+ if(event.keyCode ==13){
+ search()
+ }
+})
+</script>
+</body>
+</html>
